@@ -10,7 +10,7 @@
     \|__|\|__|\|__|\|__|\|____________|\|__|\|__|\|_______|\|_______|    \|__|
 ```                                                                          
                                                                               
-                                                                              
+## Warning: This bot is about to become depreciated, pending a complete rewrite of the command logic to get away from regex.                                                                            
 RawrBot is a discord bot that when someone on your server says rawr, it responds with "XD", among other things. It requires [Node.js](https://nodejs.org/en/download/ "Node.js Download") and [discord.js](https://github.com/discordjs/discord.js "discord.js").
 ***
 ### Installation
