@@ -1,30 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-
-const regex1 = RegExp('FORTNITE');
-const regex2 = RegExp('RAWR');
-const regex3 = RegExp('OWO');
-const regex4 = RegExp('MEME PLEASE');
-const regex5 = RegExp('GMOD');
-const regex6 = RegExp('GARRY\'S MOD');
-const regex7 = RegExp('GARRYS MOD');
-const regex8 = RegExp('FACTORIO');
-const regex9 = RegExp('CRACKTORIO');
-const regex10 = RegExp('##');
-const regex11 = RegExp('WE LIKE TO PARTY');
-const regex12 = RegExp('CRAB.ROLEPLAY');
-const regex13 = RegExp('NEITHER.KNOW');
-const regex14 = RegExp('TWO.TYPES');
-const regex15 = RegExp('RAWRBOT');
-const regex16 = RegExp('APEX');
-const regex17 = RegExp('/ANYONE');
-const regex18 = RegExp('/SANS');
-const regex19 = RegExp('/STOP');
-const regex20 = RegExp('/PAUSE');
-const regex21 = RegExp('/RESUME');
-//const sleep = (waitTimeInMs) => new Promise(resolve => setTimeout(resolve, waitTimeInMs));
-// 'client.on('message')' commands are triggered when the
-// specified message is read in a text channel that the bot is in.
+const config = require("./config.json");
 
 function getRandomIntInclusive(min, max) {
     min = Math.ceil(min);
@@ -32,7 +8,7 @@ function getRandomIntInclusive(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive
 }
 
-function mentionRandomPerson(message){
+function mentionRandomPerson(message, includeAll){
     let guild = message.guild;
     let members = guild.members;
     let gm = members.random(1)[0].user;
@@ -42,11 +18,11 @@ function mentionRandomPerson(message){
             console.log("Chose " + gm.username + ", but they're a bot.");
             members.delete(gm.id);
         }
-        else if (gm.presence.status === "offline") {
+        else if (gm.presence.status === "offline" && !includeAll) {
             console.log("Chose " +gm.username+", but they're offline.")
             members.delete(gm.id);
         }
-        else if (gm.presence.status === "dnd") {
+        else if (gm.presence.status === "dnd" && !includeAll) {
             console.log("Chose " +gm.username+", but they're not to be disturbed.")
             members.delete(gm.id);
         }
@@ -69,15 +45,12 @@ function mentionRandomPerson(message){
     }
 }
 
-function testMessage(message, regex){
-    return regex.test(message.content.toUpperCase());
-}
-
 function playAudio(file, message){
+    let fileToPlay = config.settings.songs + file + ".mp3";
     if (message.member.voiceChannel) {
         message.member.voiceChannel.join()
             .then(connection => { // Connection is an instance of VoiceConnection
-                connection.playFile(file);
+                connection.playFile(fileToPlay);
             })
             .catch(console.log);
     } else {
@@ -85,75 +58,68 @@ function playAudio(file, message){
     }
 }
 
-client.on('message', message => {
-    //console.log(message.content);
-    if (message.author.bot === false) {
-        if(regex10.test(message.content) === false) {
-            if ((regex2.test((message.content).toUpperCase()) === true) && (regex15.test((message.content).toUpperCase()) === false)) {
-                message.channel.send('XD');
-            }
+client.on('message', async message => {
+    //debugger
+    if (message.author.bot) return; //no bots
 
-            else if (regex1.test((message.content).toUpperCase()) === true) {
-                console.log(message.author.nickname);
-                message.channel.send('Fortnite is not relevant\.');
-            }
+    if (message.content.indexOf(config.settings.prefix) === 0) {
+        const args = message.content.slice(config.settings.prefix.length).trim().split(/ +/g);
+        const command = args.shift().toLowerCase();
 
-            else if (regex3.test((message.content).toUpperCase()) === true) {
-                message.channel.send('What\'s this?');
-            }
+        if (config.settings.useMemes && command === "meme") {
+            message.channel.send('Here\'s your meme:', {file: config.settings.memes + 'meme('+getRandomIntInclusive(1,config.settings.memeCount)+').jpg'});
+            return;
+        }
 
-            else if ((regex5.test((message.content).toUpperCase()) === true)||(regex6.test((message.content).toUpperCase()) === true)||(regex7.test((message.content).toUpperCase()) === true)){
-                console.log(message.author.nickname);
-                message.channel.send('Is it really Garry\'s mod\?');
-            }
-
-            else if ((regex8.test((message.content).toUpperCase()) === true)||(regex9.test((message.content).toUpperCase()) === true)) {
-                console.log(message.author.nickname);
-                message.channel.send('good game choice');
-            }
-
-            else if ((regex12.test((message.content).toUpperCase()) === true)||(regex13.test((message.content).toUpperCase()) === true)||(regex14.test((message.content).toUpperCase()) === true)) {
-                message.delete();
-            }
-
-            else if (regex11.test((message.content).toUpperCase())) {
-                message.channel.send('ha you just got venga bussed');
-            }
-
-            else if (regex16.test((message.content).toUpperCase())) {
-                console.log(message.author.username);
-                message.channel.send('Is Apex the *peak* of gaming?');
-            }
-
-            else if (regex17.test((message.content).toUpperCase())) {
-                mentionRandomPerson(message);
-            }
-
-            else if (testMessage(message, regex18)) {
-                playAudio("D:\\Desktop\\music\\megalovania.mp3", message);
-            }
-
-            else if (testMessage(message, regex19)){
+        if (config.settings.useVoice) {
+            if (command === "play") playAudio(args[0], message);
+            else if (command === "pause") client.voiceConnections.first().dispatcher.pause();
+            else if (command === "resume") client.voiceConnections.first().dispatcher.resume();
+            else if (command === "stop") client.voiceConnections.first().dispatcher.end();
+            else if (command === "leave") {
                 let vc = message.member.voiceChannel;
                 vc.leave();
             }
-            else if (testMessage(message, regex20)){
-                client.voiceConnections.first().dispatcher.pause();
-
-            }
-            else if (testMessage(message, regex21)){
-                client.voiceConnections.first().dispatcher.resume();
-            }
-            else {}
         }
-        else {}
-    }
 
+        if (command === "anyone"){
+            mentionRandomPerson(message, true);
+        }
+        else if (command === "someone"){
+            mentionRandomPerson(message, false);
+        }
+    }
+    else {
+        let msg = message.content.toLowerCase();
+        if (config.settings.useRawr) {
+            if (msg.includes("rawr")) message.channel.send('XD');
+            else if (msg.includes("owo")) message.channel.send('What\'s this?');
+        }
+
+        if (config.settings.useGaming) {
+            if (msg.includes("fortnite")) message.channel.send('Fortnite is not relevant\.');
+            else if (msg.includes("gmod") || msg.includes("garry\'s mod") || msg.includes("garrys mod") || msg.includes("g mod")) message.channel.send('Is it really Garry\'s Mod?');
+            else if (msg.includes("factorio")) message.channel.send('Good game');
+            else if (msg.includes("apex")) message.channel.send('Is Apex the *peak* of gaming?');
+        }
+
+    }
 
 });
 
-client.login("YOUR TOKEN HERE");
+client.login(config.settings.token);
 
 client.on('ready', () => {
+    console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} servers.`);
     client.user.setActivity('God', { type: 'PLAYING' })
+});
+
+client.on("guildCreate", guild => {
+    // This event triggers when the bot joins a guild.
+    console.log(`New server joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
+});
+
+client.on("guildDelete", guild => {
+    // this event triggers when the bot is removed from a guild.
+    console.log(`I have been removed from: ${guild.name} (id: ${guild.id})`);
 });
