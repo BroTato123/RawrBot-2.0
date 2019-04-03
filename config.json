@@ -1,0 +1,13 @@
+{
+  "settings": {
+    "token": "<Your Token Here>",
+    "prefix": "/",
+    "useRawr": true,
+    "useGaming": false,
+    "useMemes": false,
+    "useVoice": false,
+    "memeCount": 0,
+    "songs": "",
+    "memes": ""
+  }
+}
