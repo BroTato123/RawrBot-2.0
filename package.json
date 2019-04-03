@@ -1,25 +1,17 @@
 {
-  "name": "build-a-discord-bot",
-  "version": "0.0.1",
-  "description": "This an easy-to-understand template for a Discord bot",
-  "main": "server.js",
+  "name": "untitled",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "node server.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "discord.js": "^11.3.2",
-    "express": "^4.16.2"
-  },
-  "engines": {
-    "node": "8.x"
-  },
-  "repository": {
-    "url": "https://glitch.com/edit/#!/build-a-discord-bot"
-  },
-  "license": "MIT",
-  "keywords": [
-    "node",
-    "glitch",
-    "express"
-  ]
+    "discord.js": "^11.4.2",
+    "ffmpeg-binaries": "^4.0.0",
+    "opusscript": "0.0.6"
+  }
 }
