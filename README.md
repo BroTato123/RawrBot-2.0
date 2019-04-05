@@ -7,7 +7,7 @@
  \ \   _  _\ \   __  \ \  \  __\ \  \ \   _  _\ \   __  \ \  \\\  \   \ \  \      |__|//  / /    \ \  \\\  \  
   \ \  \\  \\ \  \ \  \ \  \|\__\_\  \ \  \\  \\ \  \|\  \ \  \\\  \   \ \  \         /  /_/__  __\ \  \\\  \ 
    \ \__\\ _\\ \__\ \__\ \____________\ \__\\ _\\ \_______\ \_______\   \ \__\       |\________\\__\ \_______\
-    \|__|\|__|\|__|\|__|\|____________|\|__|\|__|\|_______|\|_______|    \|__|        \|_______\|__|\|_______|                           
+    \|__|\|__|\|__|\|__|\|____________|\|__|\|__|\|_______|\|_______|    \|__|        \|_______\|__|\|_______|
 ```                                                                          
                                                                   
 RawrBot 2.0 is a rewrite of a discord bot that when someone on your server says rawr, it responds with "XD", among other things. It requires [Node.js](https://nodejs.org/en/download/ "Node.js Download") and [discord.js](https://github.com/discordjs/discord.js "discord.js").
